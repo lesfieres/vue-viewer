@@ -10,10 +10,11 @@
     "test:unit": "vue-cli-service test:unit"
   },
   "dependencies": {
-    "api-services": "github:lesfieres/api-services",
+    "axios": "^0.18.0",
     "register-service-worker": "^1.6.2",
     "vue": "^2.6.6",
     "vue-router": "^3.0.1",
+    "vuetify": "^1.5.5",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
@@ -34,6 +35,8 @@
     "eslint-plugin-vue": "^5.0.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "vue-template-compiler": "^2.5.21"
+    "vue-cli-plugin-vuetify": "^0.5.0",
+    "vue-template-compiler": "^2.5.21",
+    "vuetify-loader": "^1.0.5"
   }
 }
