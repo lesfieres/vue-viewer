@@ -1,0 +1,11 @@
+{
+  "vetur.format.defaultFormatter.js": "prettier-eslint",
+  "vetur.completion.useScaffoldSnippets": false,
+  "eslint.validate": [
+    "javascript",
+    {
+      "language": "vue",
+      "autoFix": false
+    }
+  ]
+}

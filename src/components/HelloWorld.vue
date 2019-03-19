@@ -92,7 +92,6 @@
 </template>
 
 <script>
-
 export default {
   name: 'HelloWorld',
   props: {
@@ -101,7 +100,7 @@ export default {
       default: 'JJJ',
     },
   },
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
