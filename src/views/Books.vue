@@ -63,7 +63,7 @@
     },
     methods: {
       search () {
-        axios.get(`http://localhost:8081/search?title=%22${this.inputSearch}%22&from=1&to=3`).then((books) => {
+        axios.get(`http://localhost:8081/search-book?title=%22${this.inputSearch}%22&from=1&to=3`).then((books) => {
           this.books = books.data; 
         })
       }
