@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container grid-list-sm fluid>
     <v-flex>
       <v-text-field v-model="inputSearch"
                     append-icon="search"
@@ -8,8 +8,35 @@
                     @keyup.enter="search()"         
       />
     </v-flex>
-    <v-flex v-for="book in books" :key="book.id">{{ book.title }}
-    </v-flex>
+    <v-layout row wrap>
+      <v-flex
+        v-for="book in books"
+        :key="book.id"
+        xs5 sm3 md3 lg2 xl1
+        d-flex
+      >
+        <v-card flat tile class="d-flex">
+          <v-img
+            :src="`${book.image_url}`"
+            :lazy-src="`${book.small_image_url}`"
+            :alt="`${book.title} (${book.author.name})`"
+            :title="`${book.title} (${book.author.name})`"
+            class="grey lighten-2"
+          >
+            <template v-slot:placeholder>
+              <v-layout
+                fill-height
+                align-center
+                justify-cent
+                ma-0
+              >
+                <v-progress-circular indeterminate color="grey lighten-5"/>
+              </v-layout>
+            </template>
+          </v-img>
+        </v-card>
+      </v-flex>
+    </v-layout>
   </v-container>
 </template>
 
@@ -27,7 +54,7 @@
     },
     watch: {
       // eslint-disable-next-line object-shorthand
-      inputSearch: function() {
+      inputSearch() {
         this.debouncedSearch()
       }
     },
@@ -36,7 +63,7 @@
     },
     methods: {
       search () {
-        axios.get(`http://localhost:8081/search?title=%22${this.inputSearch}%22&from=1&to=1`).then((books) => {
+        axios.get(`http://localhost:8081/search?title=%22${this.inputSearch}%22&from=1&to=3`).then((books) => {
           this.books = books.data; 
         })
       }
