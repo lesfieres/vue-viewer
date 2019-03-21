@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-sm fluid>
+  <v-container id="books-container" grid-list-sm fluid>
     <v-flex>
       <v-text-field v-model="inputSearch"
                     append-icon="search"
