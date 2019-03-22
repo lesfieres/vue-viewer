@@ -7,7 +7,7 @@ jobs:
   server_orient_express:
     docker:
       # specify the version you desire here
-      - image: circleci/node:8.9.1
+      - image: karthikiyengar/node-nightwatch:0.0.1
 
     working_directory: ~/orient-express
     
@@ -22,7 +22,7 @@ jobs:
   test_e2e:
     docker:
       # specify the version you desire here
-      - image: circleci/node:8.9.1
+      - image: karthikiyengar/node-nightwatch:0.0.1
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
@@ -41,6 +41,15 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
 
+      # Set up orient-express server.
+      - run: git clone https://github.com/lesfieres/orient-express.git
+      - run: cd orient-express
+      - run: npm install
+      - run: echo 'GOODREADS_KEY="$GOODREADS_KEY"' > .env
+      - run: echo 'GOODREADS_SECRET="$GOODREADS_SECRET"' > .env
+      - run: echo 'OMBD_KEY="$OMBD_KEY"' > .env
+      - run: cd ..
+      
       - run: npm install
 
       - save_cache:
@@ -51,11 +60,18 @@ jobs:
       # build the app
       - run: npm run build
 
+      # start server
+      - run: cd orient-express && npm run start & 
+
       # run tests!
-      - run: npm run test:e2e
+      - run: cd .. && sleep 10 && npm run test:e2e
+
+      # kill orient-express
+      - run: kill %1
+
+      # - run: npm run test:e2e
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - server_orient_express
       - test_e2e
