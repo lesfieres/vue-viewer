@@ -14,6 +14,9 @@ jobs:
     steps:
       - run: git clone https://github.com/lesfieres/orient-express.git .
       - run: npm install
+      - run: echo 'GOODREADS_KEY="$GOODREADS_KEY"' > .env
+      - run: echo 'GOODREADS_SECRET="$GOODREADS_SECRET"' > .env
+      - run: echo 'OMBD_KEY="$OMBD_KEY"' > .env
       - run: npm run start
 
   test_e2e:
