@@ -8,6 +8,9 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:7.10
+
+    working_directory: ~/orient-express
+    
     steps:
       - run: git clone https://github.com/lesfieres/orient-express.git
       - run: npm run start
