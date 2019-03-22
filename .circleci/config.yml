@@ -13,6 +13,7 @@ jobs:
     
     steps:
       - run: git clone https://github.com/lesfieres/orient-express.git .
+      - run: npm install
       - run: npm run start
 
   test_e2e:
