@@ -4,21 +4,6 @@
 #
 version: 2
 jobs:
-  server_orient_express:
-    docker:
-      # specify the version you desire here
-      - image: karthikiyengar/node-nightwatch:0.0.1
-
-    working_directory: ~/orient-express
-    
-    steps:
-      - run: git clone https://github.com/lesfieres/orient-express.git .
-      - run: npm install
-      - run: echo 'GOODREADS_KEY="$GOODREADS_KEY"' > .env
-      - run: echo 'GOODREADS_SECRET="$GOODREADS_SECRET"' > .env
-      - run: echo 'OMBD_KEY="$OMBD_KEY"' > .env
-      - run: npm run start
-
   test_e2e:
     docker:
       # specify the version you desire here
@@ -64,13 +49,11 @@ jobs:
       - run: cd orient-express && npm run start & 
 
       # run tests!
-      - run : cd ..
+      - run: cd ..
       - run: npm run test:e2e
 
       # kill orient-express
       - run: kill %1
-
-      # - run: npm run test:e2e
 workflows:
   version: 2
   build_and_test:
