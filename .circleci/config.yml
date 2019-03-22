@@ -7,7 +7,7 @@ jobs:
   server_orient_express:
     docker:
       # specify the version you desire here
-      - image: circleci/node:7.10
+      - image: circleci/node:8.9.1
 
     working_directory: ~/orient-express
     
@@ -19,7 +19,7 @@ jobs:
   test_e2e:
     docker:
       # specify the version you desire here
-      - image: circleci/node:7.10
+      - image: circleci/node:8.9.1
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
