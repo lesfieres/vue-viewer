@@ -64,7 +64,8 @@ jobs:
       - run: cd orient-express && npm run start & 
 
       # run tests!
-      - run: cd .. && sleep 10 && npm run test:e2e
+      - run : cd ..
+      - run: npm run test:e2e
 
       # kill orient-express
       - run: kill %1
