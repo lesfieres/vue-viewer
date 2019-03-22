@@ -12,7 +12,7 @@ jobs:
     working_directory: ~/orient-express
     
     steps:
-      - run: git clone https://github.com/lesfieres/orient-express.git
+      - run: git clone https://github.com/lesfieres/orient-express.git .
       - run: npm run start
 
   test_e2e:
