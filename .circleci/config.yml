@@ -22,7 +22,7 @@ jobs:
   test_e2e:
     docker:
       # specify the version you desire here
-      - image: karthikiyengar/node-nightwatch:0.0.1
+      - image: circleci/node:10-browsers
 
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
