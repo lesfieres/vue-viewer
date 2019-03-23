@@ -38,9 +38,9 @@ jobs:
       - run: cd ..
 
       - save_cache: 
-        paths: 
-          - orient-express 
-        key: v1-orient-express-{{ checksum "orient-express-last-commit-hash" }}
+          paths: 
+            - orient-express 
+          key: v1-orient-express-{{ checksum "orient-express-last-commit-hash" }}
 
       # Download and cache dependencies
       - restore_cache:
