@@ -19,14 +19,16 @@ jobs:
     steps:
       - checkout
 
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-            # fallback to using the latest cache if no exact match is found
-            - v1-dependencies-
-
       # Set up orient-express server.
+      # get last commit hash.
+      - run: curl --silent -u $GITHUB_USER:GITHUB_PASSWORD https://api.github.com/repos/lesfieres/orient-express/commits | head -3 | tail -1 | cut -c 13-52 > orient-express-last-commit-hash
+      
+      # Restore cache.
+      - restore_cache: 
+        keys: 
+          - v1-orient-express-{{ checksum "orient-express-last-commit-hash" }}
+
+      # Clone and prepare .env
       - run: git clone https://github.com/lesfieres/orient-express.git
       - run: cd orient-express
       - run: npm install
@@ -34,7 +36,19 @@ jobs:
       - run: echo 'GOODREADS_SECRET="$GOODREADS_SECRET"' > .env
       - run: echo 'OMBD_KEY="$OMBD_KEY"' > .env
       - run: cd ..
-      
+
+      - save_cache: 
+        paths: 
+          - orient-express 
+        key: v1-orient-express-{{ checksum "orient-express-last-commit-hash" }}
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
       - run: npm install
 
       - save_cache:
