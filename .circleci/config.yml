@@ -29,6 +29,7 @@ jobs:
             - v1-orient-express-{{ checksum "orient-express-last-commit-hash" }}
 
       # Clone and prepare .env
+      - run: rm -rf orient-express
       - run: git clone https://github.com/lesfieres/orient-express.git
       - run: cd orient-express
       - run: npm install
