@@ -8,12 +8,7 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:10-browsers
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
+      
     working_directory: ~/repo
 
     steps:
@@ -24,12 +19,12 @@ jobs:
       - run: curl --silent -u $GITHUB_USER:GITHUB_PASSWORD https://api.github.com/repos/lesfieres/orient-express/commits | head -3 | tail -1 | cut -c 13-52 > orient-express-last-commit-hash
       
       # Restore cache.
-      - restore_cache: 
-          keys: 
-            - v1-orient-express-{{ checksum "orient-express-last-commit-hash" }}
+      # TODO: Set up cache for orient-express.
+      # - restore_cache: 
+      #    keys: 
+      #      - v1-orient-express-{{ checksum "orient-express-last-commit-hash" }}
 
       # Clone and prepare .env
-      - run: rm -rf orient-express
       - run: git clone https://github.com/lesfieres/orient-express.git
       - run: cd orient-express
       - run: npm install
@@ -38,10 +33,11 @@ jobs:
       - run: echo 'OMBD_KEY="$OMBD_KEY"' > .env
       - run: cd ..
 
-      - save_cache: 
-          paths: 
-            - orient-express 
-          key: v1-orient-express-{{ checksum "orient-express-last-commit-hash" }}
+      # TODO: Set up cache for orient-express.
+      # - save_cache: 
+      #    paths: 
+      #      - orient-express 
+      #    key: v1-orient-express-{{ checksum "orient-express-last-commit-hash" }}
 
       # Download and cache dependencies
       - restore_cache:
