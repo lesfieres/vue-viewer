@@ -1,6 +1,7 @@
 import { mount, createLocalVue } from '@vue/test-utils';
 import Vuetify from 'vuetify';
 import BookCard from '@/components/BookCard.vue';
+import SilenceWarnHack from '../utils/SilenceWarnHack';
 
 let wrapper;
 let localVue;
@@ -13,10 +14,14 @@ const book = {
   small_image_url: 'small-image-url',
 };
 
+const silenceWarnHack = new SilenceWarnHack();
+
 describe('BookCard.vue', () => {
   beforeEach(() => {
+    silenceWarnHack.enable();
     localVue = createLocalVue();
     localVue.use(Vuetify);
+    silenceWarnHack.disable();
   });
 
   it('should properly show/hide elements when in grid mode', () => {

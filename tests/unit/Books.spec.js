@@ -3,6 +3,7 @@ import Vuetify from 'vuetify';
 import Books from '@/views/Books.vue';
 import mockAxios from 'axios';
 import { fail } from 'assert';
+import SilenceWarnHack from '../utils/SilenceWarnHack';
 
 let wrapper;
 let localVue;
@@ -34,12 +35,16 @@ function mockDate(isoDate) {
   };
 }
 
+const silenceWarnHack = new SilenceWarnHack();
+
 jest.useFakeTimers();
 
 describe('Books.vue', () => {
   beforeEach(() => {
+    silenceWarnHack.enable();
     localVue = createLocalVue();
     localVue.use(Vuetify);
+    silenceWarnHack.disable();
   });
 
   afterEach(() => {
@@ -63,13 +68,12 @@ describe('Books.vue', () => {
     wrapper.vm.search();
     promise
       .then(() => {
-        expect(wrapper.vm.books.length).toEqual(1);
+        expect(wrapper.vm.books.length).toEqual(2);
         expect(wrapper.find('.book-card-stub').exists()).toBe(true);
         done();
       })
       .catch(err => {
-        console.error(err);
-        done();
+        throw new Error(err);
       });
   });
 
@@ -97,8 +101,7 @@ describe('Books.vue', () => {
         done();
       })
       .catch(err => {
-        console.error(err);
-        done();
+        throw new Error(err);
       });
   });
 
@@ -143,13 +146,11 @@ describe('Books.vue', () => {
             done();
           })
           .catch(err => {
-            console.error(err);
-            done();
+            throw new Error(err);
           });
       })
       .catch(err => {
-        console.error(err);
-        done();
+        throw new Error(err);
       });
   });
 
