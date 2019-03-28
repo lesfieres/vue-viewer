@@ -19,6 +19,8 @@ module.exports = {
     browser
       .setValue('input[type=text]', 'game')
       .pause(5000)
+      .getLogTypes((result) => console.log(result))
+      .getLog('browser', (logEntriesArray)=> console.log(logEntriesArray))
       .assert.elementCount('#books-container > div.layout.row.wrap > div', 60)
       .end();
   }

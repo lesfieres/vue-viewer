@@ -63,9 +63,14 @@
     },
     methods: {
       search () {
+        console.log("merda seca");
         axios.get(`http://localhost:8081/search-book?title=%22${this.inputSearch}%22&from=1&to=3`).then((books) => {
+          console.log("result ok", JSON.stringify(books));
           this.books = books.data; 
         })
+        .catch((error) => {
+          console.log("errort", JSON.stringify(error));
+        });
       }
     }
   }
