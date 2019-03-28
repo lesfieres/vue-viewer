@@ -57,7 +57,12 @@ jobs:
       - run: npm run build
 
       # start server
-      - run: cd orient-express && npm run start & 
+      # - run: cd orient-express && npm run start & 
+      - run:
+          name: 'Start orient-express server'
+          background: true
+          command: |
+            cd orient-express && npm run start
 
       # run tests!
       - run: cd ..
