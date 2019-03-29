@@ -1,0 +1,77 @@
+# Javascript Node CircleCI 2.0 configuration file
+#
+# Check https://circleci.com/docs/2.0/language-javascript/ for more details
+#
+version: 2
+jobs:
+  test_e2e:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:10-browsers
+      
+    working_directory: ~/repo
+
+    steps:
+      - checkout
+
+      # Set up orient-express server.
+      # get last commit hash.
+      - run: curl --silent -u $GITHUB_USER:GITHUB_PASSWORD https://api.github.com/repos/lesfieres/orient-express/commits | head -3 | tail -1 | cut -c 13-52 > orient-express-last-commit-hash
+      - run: cat orient-express-last-commit-hash
+
+      # Restore cache.
+      # TODO: Set up cache for orient-express.
+      # - restore_cache: 
+      #    keys: 
+      #      - v1-orient-express-{{ checksum "orient-express-last-commit-hash" }}
+
+      # Clone and prepare .env
+      - run: git clone https://github.com/lesfieres/orient-express.git
+      - run:
+          name: "Setup orient-express"
+          command: |
+            cd orient-express
+            npm install
+            echo -n 'GOODREADS_KEY=' >> .env
+            echo $GOODREADS_KEY >> .env
+            echo -n 'GOODREADS_SECRET=' >> .env
+            echo $GOODREADS_SECRET >> .env
+            echo -n 'OMBD_KEY=' >> .env
+            echo $OMBD_KEY >> .env
+      # TODO: Set up cache for orient-express.
+      # - save_cache: 
+      #    paths: 
+      #      - orient-express 
+      #    key: v1-orient-express-{{ checksum "orient-express-last-commit-hash" }}
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      # build the app
+      - run: npm run build
+
+      # start server
+      # - run: cd orient-express && npm run start & 
+      - run:
+          name: 'Start orient-express server'
+          background: true
+          command: |
+            cd orient-express && npm run start
+      # run tests!
+      - run: npm run test:e2e
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - test_e2e
