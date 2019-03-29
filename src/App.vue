@@ -6,7 +6,7 @@
         <span class="font-weight-light">MATERIAL DESIGN</span> |
         <router-link to="/">Home</router-link> |
         <router-link to="/about">About</router-link> |
-        <router-link to="/books">Books</router-link>
+        <router-link id="toolbar-books-button" to="/books">Books</router-link>
       </v-toolbar-title>
       <v-spacer/>
       <v-btn

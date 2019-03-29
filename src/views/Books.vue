@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-sm fluid>
+  <v-container id="books-container" grid-list-sm fluid>
     <v-flex>
       <v-text-field v-model="inputSearch"
                     append-icon="search"
@@ -63,9 +63,12 @@
     },
     methods: {
       search () {
-        axios.get(`http://localhost:8081/search?title=%22${this.inputSearch}%22&from=1&to=3`).then((books) => {
+        axios.get(`http://localhost:8081/search-book?title=%22${this.inputSearch}%22&from=1&to=3`).then((books) => {
           this.books = books.data; 
         })
+        .catch((error) => {
+          console.log("error on search-book", JSON.stringify(error));
+        });
       }
     }
   }
