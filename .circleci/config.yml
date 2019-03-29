@@ -37,10 +37,12 @@ jobs:
             pwd
             cat package.json
             npm install
-            echo 'GOODREADS_KEY=${GOODREADS_KEY}' >> .env
+            echo 'GOODREADS_KEY=`echo $GOODREADS_KEY`' >> .env
             echo 'GOODREADS_SECRET=${GOODREADS_SECRET}' >> .env
             echo 'OMBD_KEY=${OMBD_KEY}' >> .env
             cat .env
+            echo $GOODREADS_KEY
+            echo ${GOODREADS_KEY}
 
       # TODO: Set up cache for orient-express.
       # - save_cache: 
