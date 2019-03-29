@@ -1,5 +1,5 @@
 <template>
-  <v-container grid-list-sm fluid>
+  <v-container id="books-container" grid-list-sm fluid>
     <v-flex>
       <v-text-field
         v-model="inputSearch"
@@ -115,9 +115,10 @@ export default {
             this.performingSearch = false;
           }
         })
-        .catch(() => {
+        .catch(error => {
           if (timeStamp === this.searchTimeStamp) {
             this.performingSearch = false;
+            console.log('error on search-book', JSON.stringify(error));
           }
         });
     },
