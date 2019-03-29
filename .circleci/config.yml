@@ -28,14 +28,9 @@ jobs:
       # Clone and prepare .env
       - run: git clone https://github.com/lesfieres/orient-express.git
       - run:
-          name: "La madre del topo"
+          name: "Setup orient-express"
           command: |
-            ls -alis
-            pwd
             cd orient-express
-            ls -alis
-            pwd
-            cat package.json
             npm install
             echo -n 'GOODREADS_KEY=' >> .env
             echo $GOODREADS_KEY >> .env
@@ -45,8 +40,6 @@ jobs:
 
             echo -n 'OMBD_KEY=' >> .env
             echo $OMBD_KEY >> .env
-
-            cat .env
 
       # TODO: Set up cache for orient-express.
       # - save_cache: 
@@ -80,11 +73,7 @@ jobs:
             cd orient-express && npm run start
 
       # run tests!
-      - run: cd ..
       - run: npm run test:e2e
-
-      # kill orient-express
-      - run: kill %1
 workflows:
   version: 2
   build_and_test:
