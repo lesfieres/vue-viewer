@@ -8,7 +8,12 @@ module.exports = {
     browser: true,
     node: true,
   },
-  extends: ['airbnb-base', 'prettier', 'plugin:vue/recommended', 'plugin:vue/strongly-recommended'],
+  extends: [
+    'airbnb-base',
+    'prettier',
+    'plugin:vue/recommended',
+    'plugin:vue/strongly-recommended',
+  ],
   globals: {
     __static: true,
   },
