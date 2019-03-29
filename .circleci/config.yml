@@ -17,7 +17,8 @@ jobs:
       # Set up orient-express server.
       # get last commit hash.
       - run: curl --silent -u $GITHUB_USER:GITHUB_PASSWORD https://api.github.com/repos/lesfieres/orient-express/commits | head -3 | tail -1 | cut -c 13-52 > orient-express-last-commit-hash
-      
+      - run: cat orient-express-last-commit-hash
+
       # Restore cache.
       # TODO: Set up cache for orient-express.
       # - restore_cache: 
@@ -27,6 +28,7 @@ jobs:
       # Clone and prepare .env
       - run: git clone https://github.com/lesfieres/orient-express.git
       - run: cd orient-express
+      - run: cat package.json
       - run: npm install
       - run: echo 'GOODREADS_KEY="$GOODREADS_KEY"' > .env
       - run: echo 'GOODREADS_SECRET="$GOODREADS_SECRET"' > .env
