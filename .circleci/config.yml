@@ -27,7 +27,11 @@ jobs:
 
       # Clone and prepare .env
       - run: git clone https://github.com/lesfieres/orient-express.git
+      - run: ls -alis
+      - run: pwd
       - run: cd orient-express
+      - run: ls -alis
+      - run: pwd
       - run: cat package.json
       - run: npm install
       - run: echo 'GOODREADS_KEY="$GOODREADS_KEY"' > .env
