@@ -40,6 +40,7 @@ jobs:
             echo 'GOODREADS_KEY="$GOODREADS_KEY"' > .env
             echo 'GOODREADS_SECRET="$GOODREADS_SECRET"' > .env
             echo 'OMBD_KEY="$OMBD_KEY"' > .env
+            cat .env
 
       # TODO: Set up cache for orient-express.
       # - save_cache: 
