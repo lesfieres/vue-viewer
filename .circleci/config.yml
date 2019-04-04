@@ -86,6 +86,11 @@ jobs:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
       - run:
+          name: 'Set vue-viewer environment variables'
+          command: |
+            echo -n 'VUE_APP_ORIENT_EXPRESS_URL=' >> .env
+            echo $VUE_APP_ORIENT_EXPRESS_URL >> .env
+      - run:
           name: 'Build the app'
           command: npm run build
       - start-orient-express
