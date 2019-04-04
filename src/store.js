@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 import axios from 'axios';
 
 Vue.use(Vuex);
-const url = 'http://localhost:8081';
+const url = process.env.VUE_APP_ORIENT_EXPRESS_URL;
 
 const state = {
   login: {
@@ -35,17 +35,16 @@ const actions = {
     return new Promise((resolve, reject) => {
       axios
         .post(`${url}/register`, { username, password })
-        .then(response => {
-          console.log(response);
+        .then(() => {
           dispatch('login', { username, password }).then(resolve);
         })
         .catch(reject);
     });
   },
-  logout({ commit }) {
+  logout({ commit, state }) {
     return axios
       .get(`${url}/logout`, {
-        headers: { Authorization: `Bearer ${this.state.login.token}` },
+        headers: { Authorization: `Bearer ${state.login.token}` },
       })
       .catch(err => {
         console.error('Error logging out', err);
@@ -55,10 +54,10 @@ const actions = {
         commit('SET_USER', { user: null, token: null });
       });
   },
-  users() {
+  users({ state }) {
     return axios
       .get(`${url}/users`, {
-        headers: { Authorization: `Bearer ${this.state.login.token}` },
+        headers: { Authorization: `Bearer ${state.login.token}` },
       })
       .then(response => {
         return response.data;
