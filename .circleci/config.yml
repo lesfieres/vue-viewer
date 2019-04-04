@@ -71,6 +71,11 @@ jobs:
           paths:
             - node_modules
           key: v2-dependencies-{{ checksum "package.json" }}
+      - run:
+          name: 'Set vue-viewer environment variables'
+          command: |
+            echo -n 'VUE_APP_ORIENT_EXPRESS_URL=' >> .env
+            echo $VUE_APP_ORIENT_EXPRESS_URL >> .env
       - persist_to_workspace:
           root: .
           paths: .

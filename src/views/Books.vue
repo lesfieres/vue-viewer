@@ -51,6 +51,8 @@ import axios from 'axios';
 import _ from 'lodash';
 import BookCard from '../components/BookCard';
 
+const url = process.env.VUE_APP_ORIENT_EXPRESS_URL;
+
 export default {
   components: {
     BookCard,
@@ -108,7 +110,7 @@ export default {
       const timeStamp = this.searchTimeStamp;
       this.performingSearch = true;
       axios
-        .get(`http://localhost:8081/search-book?title=%22${this.inputSearch}%22&from=1&to=3`)
+        .get(`${url}/search-book?title=%22${this.inputSearch}%22&from=1&to=3`)
         .then(books => {
           if (timeStamp === this.searchTimeStamp) {
             this.books = books.data;

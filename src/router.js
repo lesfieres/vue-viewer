@@ -1,8 +1,9 @@
-import Vue from 'vue'
-import Router from 'vue-router'
-import Home from './views/Home.vue'
+import Vue from 'vue';
+import Router from 'vue-router';
+import Home from './views/Home.vue';
+import store from './store';
 
-Vue.use(Router)
+Vue.use(Router);
 
 export default new Router({
   mode: 'history',
@@ -25,7 +26,27 @@ export default new Router({
     {
       path: '/books',
       name: 'books',
-      component: () => import('./views/Books.vue'),
+      component: () =>
+        import(/* webpackChunkName: "books" */ './views/Books.vue'),
+    },
+    {
+      path: '/users',
+      name: 'users',
+      component: () =>
+        import(/* webpackChunkName: "users" */ './views/Users.vue'),
+      beforeEnter: (to, from, next) => {
+        if (!store.getters.loggedIn) {
+          next(false);
+        } else {
+          next();
+        }
+      },
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: () =>
+        import(/* webpackChunkName: "register" */ './views/Register.vue'),
     },
   ],
-})
+});
