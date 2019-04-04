@@ -17,7 +17,7 @@ commands:
 
       - restore_cache:
           keys:
-            - v2-orient-express-{{ checksum "orient-express-last-commit-hash" }}
+            - v3-orient-express-{{ checksum "orient-express-last-commit-hash" }}
 
       - run:
           name: 'Checkout and npm install orient-express if not in cache'
@@ -37,7 +37,7 @@ commands:
       - save_cache:
           paths:
             - orient-express
-          key: v2-orient-express-{{ checksum "orient-express-last-commit-hash" }}
+          key: v3-orient-express-{{ checksum "orient-express-last-commit-hash" }}
 
   start-orient-express:
     description: 'Starts orient express server on background'
@@ -47,56 +47,64 @@ commands:
           background: true
           command: cd orient-express && npm run start
 jobs:
-  test_unit:
+  checkout_vue-viewer:
     executor: vue-viewer-docker
-    working_directory: ~/repo-unit
+    working_directory: ~/repo
     steps:
       - checkout
+      - persist_to_workspace:
+          root: .
+          paths: .
+  build_vue-viewer:
+    executor: vue-viewer-docker
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: ~/repo
       - restore_cache:
           keys:
-            - v1-dependencies-{{ checksum "package.json" }}
+            - v2-dependencies-{{ checksum "package.json" }}
       - run:
-          name: 'Install dependencies'
-          command: npm install
+          name: 'Install dependencies if needed'
+          command: ./.circleci/smart-npm-install.sh
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run:
-          name: 'Build the app'
-          command: npm run build
+          key: v2-dependencies-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: .
+          paths: .
+  test_unit:
+    executor: vue-viewer-docker
+    working_directory: ~/repo
+    steps:
+      - attach_workspace:
+          at: ~/repo
       - run:
           name: 'Run unit tests'
           command: npm run test:unit
-
   test_e2e:
     executor: vue-viewer-docker
-    working_directory: ~/repo-e2e
+    working_directory: ~/repo
     steps:
-      - checkout
+      - attach_workspace:
+          at: ~/repo
       - install-orient-express
-      - restore_cache:
-          keys:
-            - v1-dependencies-{{ checksum "package.json" }}
-      - run:
-          name: 'Install dependencies'
-          command: npm install
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-      - run:
-          name: 'Build the app'
-          command: npm run build
       - start-orient-express
       - run:
           name: 'Run e2e tests'
           command: npm run test:e2e
 workflows:
   version: 2.1
-  build_and_test_e2e:
+  build_and_test:
     jobs:
-      - test_e2e
-  build_and_test_unit:
-    jobs:
-      - test_unit
+      - checkout_vue-viewer
+      - build_vue-viewer:
+          requires:
+            - checkout_vue-viewer
+      - test_unit:
+          requires:
+            - build_vue-viewer
+      - test_e2e:
+          requires:
+            - build_vue-viewer
